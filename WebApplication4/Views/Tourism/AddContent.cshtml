@@ -1,0 +1,31 @@
+﻿@using WebPortal.Models.Tourism
+@model NextArticleViewModel
+@{
+    Layout = "_LayoutTourism";
+}
+@section PageName {
+    Admin Page for Main Page
+}
+@section Css {
+    <link rel="stylesheet" href="~/css/tourism/adminPanel.css">
+}
+
+<div class="adminpage">
+    <form action="/tourism/AddContent" method="post">
+        <p>Add New Voting on Main Page</p>
+        <div class="input-field">
+            @Html.TextBoxFor(x => x.Title, new { placeholder = "Enter title name" })
+            @Html.ValidationMessageFor(x => x.Title)
+        </div>
+        <div class="input-field">
+            @Html.TextBoxFor(x => x.Days, new { placeholder = "Enter quantity of days", @type = "number" })
+            @Html.ValidationMessageFor(x => x.Days)
+        </div>
+        <div class="input-field">
+            @Html.TextBoxFor(x => x.URL, new { placeholder = "Enter URL" })
+            @Html.ValidationMessageFor(x => x.URL)
+        </div>
+        @Html.ValidationSummary()
+        <button>Add</button>
+    </form>
+</div>

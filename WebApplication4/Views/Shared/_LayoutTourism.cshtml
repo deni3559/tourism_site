@@ -1,0 +1,53 @@
+﻿@inject WebPortal.Services.IAuthService authService;
+@using WebPortal.Localizations;
+
+<html>
+<head>
+    <link rel="stylesheet" href="~/css/tourism/layout.css">
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    @RenderSection("Scripts", false)
+    @RenderSection("Css", false)
+</head>
+
+</html>
+
+<body>
+    <div class="topbar-menu">
+        <div class="menu drop-down-menu">
+            <img class="topbar-image" src="~/images/tourism/menu.png" />
+            <ul class="menu-dropdown">
+                @if (authService.IsAdmin())
+                {
+                    <li><a href="/Tourism/AddContent">@TourismLoc.Index_Add_Tour_Photo</a> </li>
+                    <li class="add-shop-item"><a href="/Tourism/AddShopItem">@TourismLoc.Index_Add_Shop_Items</a></li>
+                    <li><a href="/Tourism/Link">@TourismLoc.Index_Link_Tours_Author</a> </li>
+                    <li><a href="/Tourism/LinkRole">@TourismLoc.Index_Update_User_Role</a> </li>
+                    <li><a href="/User">@TourismLoc.Index_Created_Users</a> </li>
+                }
+                <li><a href="/Tourism">@TourismLoc.Index_Main_Page</a> </li>
+                <li><a href="/">@TourismLoc.Index_Home</a> </li>
+                <li><a href="/Tourism/Shop">@TourismLoc.Index_Shop</a> </li>        
+                @if (authService.IsAuthenticated())
+                {
+                    <li><a href="/Auth/Logout">@TourismLoc.Index_Logout</a> </li>
+                }
+                else
+                {
+                    <li><a href="/Auth/Login">@TourismLoc.Index_Login</a> </li>
+                    <li><a href="/Auth/Registration">@TourismLoc.Index_Registration</a> </li>
+                }
+            </ul>
+        </div>
+        <div class="logo"><a href="/"> @RenderSection("PageName", false)</a></div>
+        <div class="search">
+            <a href="/tourism/ShopCart"> <img class="topbar-image" src="~/images/tourism/shopcart.png" /></a>
+            <span id="ShopCartCount">0</span>
+        </div>
+    </div>
+    @RenderBody()
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
+    <script src="/js/common_constants.js"></script>
+    <script src="/js/tourism/notificationTours.js"></script>
+    <script src="/js/tourism/itemCountInShopCart.js"></script>
+    <script src="/js/tourism/addItemInShopCart.js"></script>
+</body>

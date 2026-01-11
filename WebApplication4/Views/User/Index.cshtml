@@ -1,0 +1,13 @@
+﻿@using WebPortal.Models.Users
+@model List<UserViewModel>
+
+<div>
+    <a href="/User/Registration">Create User</a>
+</div>
+<ol>
+    @foreach (var user in Model)
+    {
+        <li>User name: @user.UserName Role: @user.Role</li>
+    }
+</ol>
+

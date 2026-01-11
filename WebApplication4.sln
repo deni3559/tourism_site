@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36717.8 d17.14
+VisualStudioVersion = 17.14.36717.8
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication4", "WebApplication4\WebApplication4.csproj", "{3128F86D-414E-4AD8-9F81-6AF643FF6936}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebPortal", "WebApplication4\WebPortal.csproj", "{3128F86D-414E-4AD8-9F81-6AF643FF6936}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

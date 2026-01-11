@@ -1,0 +1,52 @@
+﻿@using WebPortal.Models.Tourism
+
+@model ShopCartViewModel
+
+@{
+    Layout = "_LayoutTourism";
+}
+@section PageName {
+                    Shop Cart
+}
+
+@section Css {
+    <link rel="stylesheet" href="~/css/tourism/shop.css">
+}
+
+@section Scripts {
+    <script src="/js/tourism/shop.js"></script>
+    <script src="~/js/tourism/shopEdit.js"></script>
+}
+<div class="control-panel">
+    <div class="user-block">
+        You can view your order here  @Model.UserName (Client id: @Model.Id)
+    </div>
+    <span>Total Price of Your Shop Cart @Model.SumPriceOfAllItemsInShopCart</span>
+</div>
+<div class="shop">
+    @if(Model.SumPriceOfAllItemsInShopCart <= 0)
+    {
+        <span>There will be your items added for payment</span>
+    }
+    @foreach (var shopItem in Model.Tours)
+    {
+        <div class="product-block"
+             data-id="@shopItem.Id"
+             data-tour="@shopItem.TourName"
+             data-author="@shopItem.AuthorName">
+            <span>@shopItem.TourName</span>
+            <span>(is prepared by @shopItem.AuthorName)</span>
+            <div class="image">
+                <img class="shop-image" src="@shopItem.TourImg" />
+                <div class="shop-actions">
+                    <a class="shop-action remove-button" href="/tourism/RemoveShopCartItem?id=@shopItem.Id"> remove one item </a>
+                </div>
+            </div>
+            <span> You Added This Item @shopItem.CountOfAddedUniqueItemInShopCart times<br>
+            You will pay @shopItem.Price</span>
+        </div>
+    }
+</div>
+<div class="notification-container">
+    <div class="notification template">Example</div>
+</div>

@@ -1,0 +1,83 @@
+﻿@using WebPortal.Localizations
+@using WebPortal.Models.Tourism
+@inject WebPortal.Services.IAuthService authService;
+@model TourCreationViewModel
+@{
+    Layout = "_LayoutTourism";
+}
+@section PageName {
+    @TourismLoc.Shop_Page_name
+}
+@section Css {
+    <link rel="stylesheet" href="~/css/tourism/adminPanel.css">
+}
+
+<div class="adminpage">
+    <form action="/tourism/AddShopItem" method="post" enctype="multipart/form-data">
+        <p>@TourismLoc.Shop_Title_Page</p>
+        <div class="input-field">
+            @Html.TextBoxFor(x => x.TourName, new { placeholder = TourismLoc.Shop_Placeholder_Tour_name })
+            @Html.ValidationMessageFor(x => x.TourName)
+        </div>
+        <div class="input-field">
+            @Html.TextBoxFor(x => x.Description, new { placeholder = TourismLoc.Sho_PlaceHolder_Description })
+            @Html.ValidationMessageFor(x => x.Description)
+        </div>
+        <p>
+           @TourismLoc.Shop_Enter_Price
+        </p>
+        <div class="input-field">
+            @Html.TextBoxFor(x => x.Price, new { placeholder = "Price", @type = "number", step = "0.1", min = "1"})
+            @Html.ValidationMessageFor(x => x.Price)            
+        </div>
+        @if (authService.IsAdmin())
+        {
+            <p>
+                @TourismLoc.Shop_Title_Autors
+            </p>
+            <div class="dropdown-content">
+                @Html.DropDownListFor(x => x.AuthorId, Model.AllUsers)
+                @Html.ValidationMessageFor(x => x.AuthorId)
+            </div>
+        }
+        else
+        {
+            <p>
+                @TourismLoc.Shop_Title_Autor_Name
+            
+                <span>@Model.AuthorName</span>
+                @Html.HiddenFor(x => x.AuthorName)
+                @Html.HiddenFor(x => x.AuthorId)
+            </p>
+        }
+        <div class="file-upload">
+            <input type="file" name="TourImgFile" />
+            @Html.ValidationMessageFor(x => x.TourImgFile)
+        </div>
+        <div class="input-field">
+            @Html.TextBoxFor(x => x.TourImgUrl, new { placeholder = TourismLoc.Shop_url})
+            @Html.ValidationMessageFor(x => x.TourImgUrl)
+        </div>
+        @Html.ValidationSummary()
+        <button class="add-button">Add</button>
+    </form>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Tour name</th>
+                <th>Author name</th>
+                <th>Created Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var stat in Model.ToursStatiscticModel)
+            {
+                <tr>
+                    <td>@stat.TourName</td>
+                    <td>@stat.AutorName</td>
+                    <td>@stat.CreatedDate.ToString("dd.MM.yyyy")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

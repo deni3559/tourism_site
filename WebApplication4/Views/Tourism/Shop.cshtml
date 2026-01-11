@@ -1,0 +1,93 @@
+﻿@using WebPortal.Models.Tourism
+
+@model PersonalHomeViewModel
+
+@{
+    Layout = "_LayoutTourism";
+}
+@section PageName {
+            Shop
+}
+
+@section Css {
+    <link rel="stylesheet" href="~/css/tourism/shop.css">
+}
+
+@section Scripts {
+    <script src="/js/tourism/shop.js"></script>
+    <script src="~/js/tourism/shopEdit.js"></script>
+}
+<div class="control-panel">
+    <div class="user-block">
+        Welcome back @Model.Name (Client id: @Model.Id)
+    </div>
+    @if (Model.Tours.Any(t => t.CanDelete))
+    {
+        <div class="hidden-button">
+            <a class="remove-action"> remove all </a>
+        </div>
+    }
+</div>
+<div class="shop">
+    @foreach (var shopItem in Model.Tours)
+    {
+        <div class="product-block"
+             data-id="@shopItem.Id"
+             data-tour="@shopItem.TourName"
+             data-author="@shopItem.AuthorName">
+            @if (shopItem.CanDelete)
+            {
+                <span class="title-view mode">@shopItem.TourName</span>
+                <input class="edit mode hidden" name="name" />
+                <button type="button" class="cancel-button hidden">cancel</button>
+                <span>(is prepared by @shopItem.AuthorName)</span>
+                <br/>
+                <label>
+                    <input type="checkbox"  class="checkbox-deletion">
+                    Mark For Deletion 
+                </label>
+            }
+            else
+            {
+                <span>@shopItem.TourName</span>
+                <span>(is prepared by @shopItem.AuthorName)</span>
+            }
+            
+            <div class="image">
+                <a href="/tourism/article?id=@shopItem.Id">
+                <img class="shop-image" src="@shopItem.TourImg" />
+                </a>
+                <div class="shop-actions">
+                    <button class="shop-action buy-button"  data-tourid="@shopItem.Id">
+                        Buy
+                    </button>
+                    @if (shopItem.CanDelete)
+                    {
+                        <a class="shop-action remove-button" href="/tourism/RemoveShopItem?id=@shopItem.Id"> remove </a>
+                        <button type="button"
+                                class="notify-button">
+                            Notify Users
+                        </button>
+                    }
+                </div>
+            </div>
+            <span class="description">@shopItem.Description<br>
+           The price of the tour @shopItem.Price</span>
+        </div>
+    }
+</div>
+<h3 class="minimal-api-title hidden">Here below you can choose rental car if you want</h3>
+<div class="shop from-minimal-api">
+        <div class="product-block template-car"
+             data-id="">
+             <span class="title">xxx</span>
+            <div class="image">
+            <a href="url">
+                <img class="shop-image" src="" />
+            </a>
+            </div>
+        </div>
+</div>
+<div class="notification-container">
+    <div class="notification template">Example</div>
+</div>
