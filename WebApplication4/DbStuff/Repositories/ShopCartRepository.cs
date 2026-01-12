@@ -11,24 +11,12 @@ namespace WebPortal.DbStuff.Repositories
         {
         }
 
-        public List<ShopCart> GetToursAddedInShopCart()
+        public List<ShopCart> GetToursAddedInAllShopCart()
         {
             return _portalContext
                 .ShopCart
                 .Include(x => x.TourInShop)
                 .ThenInclude(x => x.Author)
-                .ToList();
-        }
-
-
-        public List<ShopCart> GetUniqueTourAddedInShopCart()
-        {
-            return _portalContext
-                .ShopCart
-                .Include(x => x.TourInShop)
-                .ThenInclude(x => x.Author)
-                .GroupBy(x => x.TourInShopId)
-                .Select(x => x.First())
                 .ToList();
         }
 
@@ -40,30 +28,24 @@ namespace WebPortal.DbStuff.Repositories
                 .Where(x => x.UserId == userId)
                 .Count(x => x.TourInShopId == tourId);
         }
-        public List<ShopCart> GetUserShopCart(int userId)
+        public List<int> GetListAllTorsShopCart(int userId)
         {
             return _portalContext.ShopCart
-                .Include(x => x.TourInShop)
-                    .ThenInclude(t => t.Author)
                 .Where(x => x.UserId == userId)
-                .GroupBy(x => x.TourInShopId)
-                .Select(x => x.First())
+                .Select(x => x.TourInShopId)              
                 .ToList();
         }
 
-        public double GetSumPriceOfUniqueAddedItem(int tourId)
+        public List<ShopCart> GetUserShopCart(int userId) 
         {
-            return _portalContext.ShopCart
-            .Where(x => x.TourInShopId == tourId)
-            .Sum(x => x.TourInShop.Price);
-        }
+    return _portalContext.ShopCart
+        .Include(x => x.TourInShop)
+            .ThenInclude(t => t.Author)
+        .Where(x => x.UserId == userId)
+        .GroupBy(x => x.TourInShopId)
+        .Select(g => g.First())
+        .ToList();
+}
 
-        public double SumPriceInShopCart()
-        {
-            return _portalContext
-                .ShopCart
-                .Include(x => x.TourInShop)
-                .Sum(x => x.TourInShop.Price);
-        }
     }
 }

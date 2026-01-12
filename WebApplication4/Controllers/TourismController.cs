@@ -243,9 +243,10 @@ namespace WebPortal.Controllers
         }
         public IActionResult RemoveShopItem(int id)
         {
+            var userId = _authService.GetId();
             var shopCartItems = _shopCartRepository
-                    .GetToursAddedInShopCart()
-                    .Where(x => x.TourInShopId == id)
+                    .GetToursAddedInAllShopCart()
+                    .Where(x => x.TourInShopId == id && x.UserId == userId)
                     .ToList();
 
             foreach (var item in shopCartItems)
@@ -366,7 +367,7 @@ namespace WebPortal.Controllers
             foreach (var id in ids)
             {
                 var shopCartItems = _shopCartRepository
-                    .GetToursAddedInShopCart()
+                    .GetToursAddedInAllShopCart()
                     .Where(x => x.TourInShopId == id)
                     .ToList();
 
@@ -399,7 +400,7 @@ namespace WebPortal.Controllers
         public IActionResult GetCountShopCartItems()
         {
             var userId = _authService.GetId();
-            var countShopCartItems = _shopCartRepository.GetUserShopCart(userId).Count();
+            var countShopCartItems = _shopCartRepository.GetListAllTorsShopCart(userId).Count();
             return Json(new { countShopCartItems });
         }
         
@@ -413,7 +414,8 @@ namespace WebPortal.Controllers
                 
             };
             _shopCartRepository.Add(shopCartBd);
-            var countShopCartItems = _shopCartRepository.GetToursAddedInShopCart().Count();
+           
+            var countShopCartItems = _shopCartRepository.GetListAllTorsShopCart(userId).Count();
             return Json(new { countShopCartItems });
         }
         #endregion
@@ -429,15 +431,14 @@ namespace WebPortal.Controllers
                 viewModel.UserName = "Guest";              
             }
 
-            var id = _authService.GetId();
-            var user = _authService.GetUser();
+            var userId = _authService.GetId();
             var name = _authService.GetUser().UserName;
 
-            viewModel.Id = id;
+            viewModel.Id = userId;
             viewModel.UserName = name;
 
             var cartItem = _shopCartRepository
-                .GetUserShopCart(user.Id)
+                .GetUserShopCart(userId)
                 .Select(dbData => new TourViewModel
                 {
                     TourName = dbData.TourInShop.TourName,
